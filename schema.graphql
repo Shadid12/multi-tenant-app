@@ -1,0 +1,29 @@
+type User {
+  username: String
+  email: String! @unique
+  stores: [Store] @relation
+}
+
+type Store {
+  name: String!
+  category: [String!]
+  owner: User!
+  products: [Product] @relation
+}
+
+type Product {
+  name: String!
+  price: Float!
+  inventory: Int!
+  store: Store!
+}
+
+type Query {
+  user(username: String!): User
+  store(name: String!): Store
+  storeByCategory(category: String!): [Store]
+  product(name: String!): Product
+  users: [User]
+  stores: [Store]
+  products: [Product]
+}
