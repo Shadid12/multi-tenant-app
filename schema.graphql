@@ -2,6 +2,7 @@ type User {
   username: String
   email: String! @unique
   stores: [Store] @relation
+  sub: String! @unique
 }
 
 type Store {
@@ -20,6 +21,7 @@ type Product {
 
 type Query {
   user(username: String!): User
+  userBySub(sub: String): User
   store(name: String!): Store
   storeByCategory(category: String!): [Store]
   product(name: String!): Product
