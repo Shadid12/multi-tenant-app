@@ -1,14 +1,13 @@
 import { createClient } from "urql";
 
-const client = createClient({
-  url: 'http://localhost:3000/graphql',
+const client = token => createClient({
+  url: process.env.FAUNA_DOMAIN,
   fetchOptions: () => {
-    const token = getToken();
     return {
       headers: { authorization: token ? `Bearer ${token}` : '' },
     };
   },
 });
 
-export default client;
+export { client };
 
