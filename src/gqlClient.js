@@ -1,7 +1,7 @@
 import { createClient } from "urql";
 
 const client = token => createClient({
-  url: process.env.FAUNA_DOMAIN,
+  url: process.env.NEXT_PUBLIC_FAUNA_DOMAIN,
   fetchOptions: () => {
     return {
       headers: { authorization: token ? `Bearer ${token}` : '' },

@@ -3,13 +3,32 @@ import Layout from '../components/layout';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { Provider } from "urql";
 import { client } from '../src/gqlClient';
-import { Auth0Provider } from '@auth0/auth0-react';
+import { useEffect, useState } from 'react';
 
 
 function MyApp({ Component, pageProps }) {
+
+  const [token, setToken] = useState(null);
+  
+  useEffect(() => {
+    fetchToken();
+  },[]);
+
+  const fetchToken = async () => { 
+    const response = await fetch('/api/token');	
+    const { accessToken } = await response.json();
+    setToken(accessToken);
+  }
+
+  if(!token) { 
+    return null;
+  }
+
+  const clientWithToken = client(token);
+
   return (
     <UserProvider>
-      <Provider value={client}>
+      <Provider value={clientWithToken}>
         <Layout {...pageProps}>
           <Component {...pageProps} />
         </Layout>
