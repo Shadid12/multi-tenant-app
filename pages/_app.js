@@ -15,9 +15,14 @@ function MyApp({ Component, pageProps }) {
   },[]);
 
   const fetchToken = async () => { 
-    const response = await fetch('/api/token');	
-    const { accessToken } = await response.json();
-    setToken(accessToken);
+    try {
+      const response = await fetch('/api/token');	
+      const { accessToken } = await response.json();
+      setToken(accessToken); 
+    } catch (error) {
+      console.log('--<<>', error);
+      setToken(process.env.NEXT_PUBLIC_FAUNA_KEY)
+    }
   }
 
   if(!token) { 

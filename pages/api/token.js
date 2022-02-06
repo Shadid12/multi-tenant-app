@@ -1,6 +1,12 @@
-import { getAccessToken, withApiAuthRequired } from '@auth0/nextjs-auth0';	
+import { getAccessToken } from '@auth0/nextjs-auth0';	
 
-export default withApiAuthRequired(async function token(req, res) {
+export default async function token(req, res) {
   const { accessToken } = await getAccessToken(req, res);
+  if(!accessToken) { 
+    res.status(401).json({
+      error: 'UnAuthorized',
+      accessToken: null
+    });
+  }
   res.status(200).json({ accessToken });
-});
+};

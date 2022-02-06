@@ -1,4 +1,5 @@
 import { getSession } from "@auth0/nextjs-auth0";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useMutation } from "urql";
 import { client } from "../../src/gqlClient";
@@ -25,12 +26,11 @@ const CreateStore = `
 `
 
 export default function NewShop({ accessToken, userInfo}) {
+  const router = useRouter();
   const [state, setState] = useState({
     name: '',
     category: '',
   });
-
-  console.log('accessToken', userInfo);
 
   const [{fetching, data, error}, executeMutation] = useMutation(CreateStore);
 
@@ -47,10 +47,15 @@ export default function NewShop({ accessToken, userInfo}) {
       name: state.name,
       ownerId: userInfo._id,
       category: state.category.split(','),
-    });
+    }).then(data => {
+      alert('Successfully created a new store');
+      router.push('/shops');
+    }).catch(err => {
+      console.log(err);
+     })
   }
 
-  console.log('createStoreResult ==>', data)
+  if(fetching) return <p>Loading...</p>
 
   return (
     <div className="container">

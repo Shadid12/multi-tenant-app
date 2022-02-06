@@ -19,9 +19,14 @@ const Navbar = () => {
             <div className="buttons">
               {
                 user ? ( 
-                  <Link href="/api/auth/logout">
-                    <a>Logout</a>
-                  </Link>
+                  <>
+                    <Link href="/shops">
+                      <a className="button is-success">Start Selling</a>
+                    </Link>
+                    <Link href="/api/auth/logout">
+                      <a className="button is-danger">Logout</a>
+                    </Link>
+                  </>
                 ) : (
                   <Link href="/api/auth/login">
                     <a className="button is-primary" >
