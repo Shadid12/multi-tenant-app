@@ -1,13 +1,14 @@
 import styles from '../styles/Home.module.css'
-import { getSession } from '@auth0/nextjs-auth0';
-import { client } from '../src/gqlClient';
+// import { getSession } from '@auth0/nextjs-auth0';
+// import { client } from '../src/gqlClient';
 
-const UserQuery = `
+export const UserQuery = `
   query UserQuery($sub: String!){
     userBySub(sub: $sub) {
       _id
       username
-    } 
+      sub
+    }
   }
 `;
 
@@ -25,7 +26,7 @@ const CreateNewuser = `
   }
 `
 
-export default function Home({ userInfo }) {
+export default function Home() {
 
   return (
     <div className={styles.container}>
@@ -34,39 +35,39 @@ export default function Home({ userInfo }) {
   )
 }
 
-export async function getServerSideProps({ req, res }) {
-  const session = await getSession(req, res);
+// export async function getServerSideProps({ req, res }) {
+//   const session = await getSession(req, res);
 
-  if(!session) { 
-    return {
-      props: {}
-    }
-  }
+//   if(!session) { 
+//     return {
+//       props: {}
+//     }
+//   }
 
-  const { user, accessToken } = session;
-  const serverClient = client(accessToken);
-  const userInfo = await serverClient.query(UserQuery, { sub: user.sub }).toPromise();
+//   const { user, accessToken } = session;
+//   const serverClient = client(accessToken);
+//   const userInfo = await serverClient.query(UserQuery, { sub: user.sub }).toPromise();
   
-  if(!userInfo.userBySub) {
-    // User not found Create a new user
-    console.log('User not found, creating a new user', user);
-    const newUser = await serverClient.mutation(CreateNewuser, { 
-      username: user.given_name,
-      email: user.nickname,
-      sub: user.sub
-    }).toPromise();
+//   if(!userInfo.data?.userBySub) {
+//     // User not found Create a new user
+//     console.log('User not found, creating a new user', user);
+//     const newUser = await serverClient.mutation(CreateNewuser, { 
+//       username: user.given_name,
+//       email: user.nickname,
+//       sub: user.sub
+//     }).toPromise();
 
-    console.log('New user created', newUser.data);
-    return {
-      props: {
-        userInfo: newUser.data ? newUser.data.createUser : null
-      }
-    }
-  }
+//     console.log('New user created', newUser.data);
+//     return {
+//       props: {
+//         userInfo: newUser.data ? newUser.data.createUser : null
+//       }
+//     }
+//   }
   
-  return {
-    props: {
-      userInfo: userInfo.data ? userInfo.data.userBySub : null
-    }
-  }
-}
+//   return {
+//     props: {
+//       userInfo: userInfo.data ? userInfo.data.userBySub : null
+//     }
+//   }
+// }
