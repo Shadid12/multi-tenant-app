@@ -5,3 +5,8 @@
 .buttonWrap a {
   margin-right: 20px;
 }
+
+.shopContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
