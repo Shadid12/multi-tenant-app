@@ -10,13 +10,14 @@ type Store {
   category: [String!]
   owner: User!
   products: [Product] @relation
+  image: String
 }
 
 type Product {
   name: String!
   price: Float!
-  inventory: Int!
   store: Store!
+  image: String
 }
 
 type Query {

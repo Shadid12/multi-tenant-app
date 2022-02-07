@@ -15,7 +15,7 @@ export default function StoreItem({ store }) {
         </div>
       </p>
       <div className={styles.buttonWrap}>
-        <Link href="/">
+        <Link href={`/shops/${store._id}/add-item`}>
           <a className="button is-success is-light">Add Items</a>
         </Link>
 
