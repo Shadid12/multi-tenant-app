@@ -10,3 +10,9 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.productImage {
+  height: 200px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}

@@ -21,7 +21,7 @@ const Navbar = () => {
                 user ? ( 
                   <>
                     <Link href="/shops">
-                      <a className="button is-success">Start Selling</a>
+                      <a className="button is-success">Seller Profile</a>
                     </Link>
                     <Link href="/api/auth/logout">
                       <a className="button is-danger">Logout</a>
