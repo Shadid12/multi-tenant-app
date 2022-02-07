@@ -103,7 +103,6 @@ export async function getServerSideProps({ req, res }) {
   const serverClient = client(accessToken);
 
   const userInfo = await serverClient.query(UserQuery, { sub: user.sub }).toPromise();
-  console.log('Current User Info', userInfo.data);
 
   return {
     props: {

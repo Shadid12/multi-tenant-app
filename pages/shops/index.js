@@ -1,5 +1,5 @@
 import Link from "next/link";
-import StoreItem from "../../components/storeItem";
+import ShopItem from "../../components/shopItem";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useQuery } from "urql";
 import { useEffect } from "react";
@@ -25,7 +25,6 @@ export default function MyShops() {
 
   useEffect(() => {
     if(user?.sub) {
-      console.log('User found', user);
       reexecuteQuery({ sub: user.sub });
     }
   }, [user]);
@@ -37,7 +36,6 @@ export default function MyShops() {
 
   if(fetching) return <p>Loading...</p>;
 
-  console.log('data', data);
 
   return (
     <div className="container">
@@ -49,7 +47,7 @@ export default function MyShops() {
         {
           data?.userBySub?.stores?.data?.map(store => (
             <div className="tile is-4 is-vertical is-parent" key={store._id}>
-              <StoreItem store={store}/>
+              <ShopItem store={store}/>
             </div>
           ))
         }
