@@ -33,15 +33,15 @@ function MyApp({ Component, pageProps }) {
   const clientWithToken = client(token);
 
   return (
-    <ReduxProvider store={store}>
       <UserProvider>
         <Provider value={clientWithToken}>
-          <Layout {...pageProps}>
-            <Component {...pageProps} />
-          </Layout>
+          <ReduxProvider store={store}>
+            <Layout {...pageProps}>
+              <Component {...pageProps} />
+            </Layout>
+          </ReduxProvider>
         </Provider>
       </UserProvider>
-    </ReduxProvider>
   )
 }
 
