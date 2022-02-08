@@ -1,6 +1,7 @@
 import styles from '../styles/Home.module.css'
 import { getSession } from '@auth0/nextjs-auth0';
 import { client } from '../src/gqlClient';
+import Dashboard from '../components/dashboard';
 
 export const UserQuery = `
   query UserQuery($sub: String!){
@@ -29,8 +30,14 @@ const CreateNewuser = `
 export default function Home() {
 
   return (
-    <div className={styles.container}>
-      Hello World!
+    <div className={styles.main}>
+      <div className="columns">
+        <div className="column is-2">
+          <input className="input is-link" type="text" placeholder="Search Products" />
+          <button className="button is-link">Search</button>
+        </div>
+        <Dashboard />
+      </div>
     </div>
   )
 }

@@ -1,0 +1,15 @@
+.productImage {
+  height: 200px;
+}
+
+.buttonWrap {
+  display: flex;
+}
+
+.buttonWrap button {
+  margin: 0px;
+}
+
+.buttonWrap a {
+  margin-left: 2px;
+}
