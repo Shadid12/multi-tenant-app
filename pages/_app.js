@@ -4,6 +4,8 @@ import { UserProvider } from '@auth0/nextjs-auth0';
 import { Provider } from "urql";
 import { client } from '../src/gqlClient';
 import { useEffect, useState } from 'react';
+import store from '../src/store';
+import { Provider as ReduxProvider } from 'react-redux';
 
 
 function MyApp({ Component, pageProps }) {
@@ -31,13 +33,15 @@ function MyApp({ Component, pageProps }) {
   const clientWithToken = client(token);
 
   return (
-    <UserProvider>
-      <Provider value={clientWithToken}>
-        <Layout {...pageProps}>
-          <Component {...pageProps} />
-        </Layout>
-      </Provider>
-    </UserProvider>
+    <ReduxProvider store={store}>
+      <UserProvider>
+        <Provider value={clientWithToken}>
+          <Layout {...pageProps}>
+            <Component {...pageProps} />
+          </Layout>
+        </Provider>
+      </UserProvider>
+    </ReduxProvider>
   )
 }
 
