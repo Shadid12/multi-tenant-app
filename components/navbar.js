@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { useUser } from '@auth0/nextjs-auth0';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => { 
   const { user } = useUser();
+  const items = useSelector(state => state.cart.items);
+
 
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -20,6 +23,9 @@ const Navbar = () => {
               {
                 user ? ( 
                   <>
+                    <Link href="/cart">
+                      <a className="button">{items.length} 🛒</a>
+                    </Link>
                     <Link href="/shops">
                       <a className="button is-success">Seller Profile</a>
                     </Link>
