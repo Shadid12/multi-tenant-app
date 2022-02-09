@@ -21,7 +21,6 @@ export default function ShopItem({ store }) {
         <Link href="/">
           <a className="button is-warning is-light">Edit Store</a>
         </Link>
-        
       </div>
     </div>
   )

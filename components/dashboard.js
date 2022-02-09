@@ -1,21 +1,19 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { useQuery } from "urql";
-import styles from '../styles/Products.module.css';
-import { useDispatch } from 'react-redux';
-import { addtocart } from "../src/features/cart/cartSlice";
+import styles from '../styles/Stores.module.css';
 
 
-const GetProducts = `
-  query GetProducts($size: Int!) { 
-    products(_size: $size) {
+const GetStores = `
+  query GetStores($size: Int!) { 
+    stores(_size: $size) {
       data {
         _id
         name
-        price
         image
-        store {
-          name
+        category
+        owner {
+          username
         }
       }
       after
@@ -26,11 +24,10 @@ const GetProducts = `
 
 
 export default function Dashboard() {
-  const dispatch = useDispatch();
   
   const [{fetching, data, error}, reexecuteQuery] = useQuery({
-    query: GetProducts,
-    variables: { size: 10 },
+    query: GetStores,
+    variables: { size: 100 },
   });
 
   useEffect(() => {
@@ -45,17 +42,20 @@ export default function Dashboard() {
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', padding: '20px' }}>
-      {data?.products?.data.map(product => (
-        <div className="tile is-3 is-parent" key={product._id}>
+    {error ? (
+      <div className="notification is-danger">
+        {error.message}
+      </div>
+    ) : null}
+
+      {data?.stores?.data.map(shop => (
+        <div className="tile is-4 is-parent" key={shop._id}>
           <div className="tile is-child box">
-            <p className="title is-4">{product.name}</p>
-            <img src={product.image} alt="" className={styles.productImage}/>
+            <p className="title is-4">{shop.name}</p>
+            <img src={shop.image ? shop.image : 'https://cdn.pixabay.com/photo/2019/08/27/04/18/store-icon-4433328_1280.png'} alt="" className={styles.productImage}/>
             <div className={styles.buttonWrap}>
-              <button className="button" onClick={
-                () => dispatch(addtocart(product))
-              }>🛒 Add to Cart</button>
-              <Link href="/shops/new">
-                <a className="button">View</a>
+              <Link href={`/shops/${shop._id}`}>
+                <a className="button">View Store</a>
               </Link>
             </div>
           </div>
