@@ -20,7 +20,13 @@ export default function Cart() {
   const dispatch = useDispatch();
   
   const checkout = async () => {
-    const result = await fetch('/api/stripe/payment');
+    const result = await fetch(`/api/stripe/payment`, {
+      method: 'POST',
+      body: JSON.stringify({
+        accountId: 'acct_1KR8oEQUeME0gxGO',
+        price: total * 100
+      })
+    });
     const session = await result.json();
 
     const stripe = await getStripe();
