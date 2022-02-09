@@ -7,12 +7,6 @@ export const slice = createSlice({
     items: [],
   },
   reducers: {
-    increment: state => {
-      state.value += 1;
-    },
-    decrement: state => {
-      state.value -= 1;
-    },
     addtocart: (state, action) => { 
       state.items = [
         ...state.items,
@@ -20,12 +14,13 @@ export const slice = createSlice({
       ]
     },
     removefromcart: (state, action) => { 
-      state.items = state.items.filter(item => item._id !== action.payload._id);
+      const index = state.items.findIndex(item => item._id === action.payload._id);
+      state.items.splice(index, 1);
     }
   },
 });
 
-export const { increment, decrement, incrementByAmount, addtocart } = slice.actions;
+export const { removefromcart, addtocart } = slice.actions;
 
 export const incrementAsync = amount => dispatch => {
   setTimeout(() => {

@@ -17,7 +17,13 @@ export default async function PaymentMethod(req, res) {
     ],
     mode: 'payment',
     success_url: 'http://localhost:3000',
-    cancel_url: 'http://localhost:3000'
+    cancel_url: 'http://localhost:3000',
+    payment_intent_data: {
+      application_fee_amount: 220,
+      transfer_data: {
+        destination: 'acct_1KR8oEQUeME0gxGO',
+      },
+    },
   });
 
   res.status(200).json({ session });
