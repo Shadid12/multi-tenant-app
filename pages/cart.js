@@ -14,6 +14,9 @@ const getStripe = () => {
 export default function Cart() {
 
   const cartItems = useSelector(state => state.cart.items);
+  const storeAccount = useSelector(state => state.cart?.items[0]?.owner.stripeAccount);
+
+  console.log('storeAccount', storeAccount);
 
   const total = cartItems.reduce((acc, i) => acc + i.price, 0);
 
@@ -23,7 +26,7 @@ export default function Cart() {
     const result = await fetch(`/api/stripe/payment`, {
       method: 'POST',
       body: JSON.stringify({
-        accountId: 'acct_1KR8oEQUeME0gxGO',
+        accountId: storeAccount,
         price: total * 100
       })
     });

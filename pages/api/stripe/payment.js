@@ -2,7 +2,6 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET);
 
 export default async function PaymentMethod(req, res) {
   const { accountId, price } = JSON.parse(req.body);
-  console.log('=====>>>>>>>', accountId, price);
   if(req.method === 'POST') { 
     const session = await stripe.checkout.sessions.create({
       line_items: [

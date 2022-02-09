@@ -1,14 +1,17 @@
 import Link from "next/link";
 import ShopItem from "../../components/shopItem";
 import { useUser } from "@auth0/nextjs-auth0";
-import { useQuery } from "urql";
+import { useMutation, useQuery } from "urql";
 import { useEffect } from "react";
 import styles from '../../styles/Stores.module.css';
 
 export const GetMyShops = `
-  query GetMyShops($sub: String!){
+  query GetMyShops($sub: String!) {
     userBySub(sub: $sub) {
       _id
+      email
+      sub
+      stripeAccount
       stores {
         data {
          _id
@@ -19,6 +22,24 @@ export const GetMyShops = `
     }
   }
 `;
+
+const UpdateUser = `
+  mutation UpdateUser(
+    $id: ID!, 
+    $stripeAccount: String!
+    $email: String!
+    $sub: String!
+  ) {
+    updateUser(id: $id, data: {
+      stripeAccount: $stripeAccount
+      email: $email
+      sub: $sub
+    }) {
+      _id
+      stripeAccount
+    }
+  }
+`
 
 export default function MyShops() {
   const { user } = useUser();
@@ -34,7 +55,36 @@ export default function MyShops() {
     variables: { sub: user?.sub },
   });
 
+
+  const [updateUserResult, updateUserMutation] = useMutation(UpdateUser);
+
   if(fetching) return <p>Loading...</p>;
+
+  const activateSellerProfile = async () => {
+    const response = await fetch('/api/stripe/create-account');
+    const accountData = await response.json();
+    const { email, sub } = data.userBySub;
+
+    updateUserMutation({
+      id: data?.userBySub._id,
+      stripeAccount: accountData.account.id,
+      email,
+      sub,
+    }).then(res => {
+      console.log('res', res);
+      alert('user updated');
+      reexecuteQuery({ sub: user?.sub });
+    });
+  }
+
+  if(!data.userBySub?.stripeAccount) {
+    return (
+      <div className="container">
+        <h1 className="title is-8">Activate your seller profile</h1> 
+        <button className="button is-info is-light" onClick={activateSellerProfile}>Activate</button>
+      </div>
+    )
+  }
 
 
   return (

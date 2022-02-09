@@ -17,6 +17,10 @@ query FindShopById($id: ID!) {
         image
       }
     }
+    owner {
+      _id
+      stripeAccount
+    }
   }
 }
 `
@@ -58,7 +62,7 @@ export default function Shop() {
                   <div>$ {product.price}</div>
                   <button className="button is-primary is-light" onClick={
                     () => {
-                      dispatch(addtocart(product));
+                      dispatch(addtocart({ ...product, owner: data.findStoreByID.owner } ));
                     }
                   }>Add to Cart</button>
                 </div>

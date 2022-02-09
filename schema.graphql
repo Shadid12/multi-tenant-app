@@ -3,6 +3,7 @@ type User {
   email: String! @unique
   stores: [Store] @relation
   sub: String! @unique
+  stripeAccount: String @unique
 }
 
 type Store {

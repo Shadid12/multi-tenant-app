@@ -27,7 +27,7 @@ const Navbar = () => {
                       <a className="button">{items.length} 🛒</a>
                     </Link>
                     <Link href="/shops">
-                      <a className="button is-success">Seller Profile</a>
+                      <a className="button">Seller Profile</a>
                     </Link>
                     <Link href="/api/auth/logout">
                       <a className="button is-danger">Logout</a>
