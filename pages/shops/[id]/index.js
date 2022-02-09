@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useQuery } from "urql";
+import { addtocart } from '../../../src/features/cart/cartSlice';
 
 const FindShopById = `
 query FindShopById($id: ID!) { 
@@ -24,6 +24,9 @@ query FindShopById($id: ID!) {
 export default function Shop() {
 
   const router = useRouter();
+
+  const dispatch = useDispatch();
+
   const [{fetching, data, error}, reexecuteQuery] = useQuery({
     query: FindShopById,
     variables: { id: router.query.id },
@@ -53,7 +56,11 @@ export default function Shop() {
                   </div>
                   <div>{product.name}</div>
                   <div>$ {product.price}</div>
-                  <button>Add to Cart</button>
+                  <button className="button is-primary is-light" onClick={
+                    () => {
+                      dispatch(addtocart(product));
+                    }
+                  }>Add to Cart</button>
                 </div>
               </div>
             </div>
