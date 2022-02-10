@@ -15,6 +15,8 @@ export default function Cart() {
 
   const cartItems = useSelector(state => state.cart.items);
 
+  console.log('cartItems', cartItems);
+
   let total = 0;
   Object.entries(cartItems).forEach(([_key, item]) => {
     total = total + item.quantity * item.price;
@@ -26,8 +28,7 @@ export default function Cart() {
     const result = await fetch(`/api/stripe/payment`, {
       method: 'POST',
       body: JSON.stringify({
-        accountId: storeAccount,
-        price: total * 100
+        cartItems
       })
     });
     const session = await result.json();
@@ -85,7 +86,7 @@ export default function Cart() {
         </div>
         <div className='column is-8' style={{ marginTop: '20px' }}>
           <div>Total $ {total}</div>
-          <button onClick={checkout} className="button is-link" disabled={cartItems.length == 0}>Checkout</button>
+          <button onClick={checkout} className="button is-link" disabled={total == 0}>Checkout</button>
         </div>
       </div>
     </div>
