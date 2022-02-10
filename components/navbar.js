@@ -4,8 +4,15 @@ import { useSelector } from 'react-redux';
 
 const Navbar = () => { 
   const { user } = useUser();
-  const items = useSelector(state => state.cart.items);
-
+  const total = useSelector(state => {
+    let totalItem = 0;
+    const items = state.cart.items;
+    console.log('items', items);
+    for (const [key, value] of Object.entries(items)) {
+      totalItem = totalItem + items[key].quantity;
+    }
+    return totalItem;
+  });
 
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -24,7 +31,7 @@ const Navbar = () => {
                 user ? ( 
                   <>
                     <Link href="/cart">
-                      <a className="button">{items.length} 🛒</a>
+                      <a className="button">{total} 🛒</a>
                     </Link>
                     <Link href="/shops">
                       <a className="button">Seller Profile</a>

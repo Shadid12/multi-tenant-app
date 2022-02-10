@@ -3,19 +3,25 @@ import { createSlice } from '@reduxjs/toolkit';
 export const slice = createSlice({
   name: 'cart',
   initialState: {
-    value: 0,
-    items: [],
+    items: {},
   },
   reducers: {
     addtocart: (state, action) => { 
-      state.items = [
-        ...state.items,
-        action.payload,
-      ]
+      if(state.items[action.payload._id]) {
+        state.items[action.payload._id].quantity += 1;
+      } else {
+        state.items[action.payload._id] = {
+          ...action.payload,
+          quantity: 1,
+        }
+      }
     },
-    removefromcart: (state, action) => { 
-      const index = state.items.findIndex(item => item._id === action.payload._id);
-      state.items.splice(index, 1);
+    removefromcart: (state, action) => {
+      if(state.items[action.payload.id].quantity > 1) {
+        state.items[action.payload.id].quantity -= 1;
+      } else {
+        delete state.items[action.payload.id];
+      }
     }
   },
 });

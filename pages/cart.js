@@ -14,11 +14,11 @@ const getStripe = () => {
 export default function Cart() {
 
   const cartItems = useSelector(state => state.cart.items);
-  const storeAccount = useSelector(state => state.cart?.items[0]?.owner.stripeAccount);
 
-  console.log('storeAccount', storeAccount);
-
-  const total = cartItems.reduce((acc, i) => acc + i.price, 0);
+  let total = 0;
+  Object.entries(cartItems).forEach(([_key, item]) => {
+    total = total + item.quantity * item.price;
+  });
 
   const dispatch = useDispatch();
   
@@ -41,24 +41,47 @@ export default function Cart() {
     <div className='container'>
       <div className='columns'>
         <div className='column is-4'>
-        {cartItems.map(item => (
-          <div className="card" key={item._id} style={{ marginTop: '5px', maxWidth: '300px' }}>
-            <div className="card-content">
-              <div className="content">
-                <p>{item.name}</p>
-                <p>$ {item.price}</p>
-              </div>
-              <img src={item.image} alt={item.name} style={{ height: '80px' }}/>
-              <div>
-                <button className='button' onClick={() => {
-                  dispatch(removefromcart(item));
-                }}>
-                  ❌ Remove
-                </button>
+        {Object.entries(cartItems).map(([_key, item]) => {
+          console.log('_key', _key);
+          return (
+            <div className="card" key={_key} style={{ marginTop: '5px', maxWidth: '300px' }}>
+              <div className="card-content">
+                <div className="content">
+                  <p>{item.name}</p>
+                  <p>$ {item.price}</p>
+                </div>
+                <img src={item.image} alt={item.name} style={{ height: '80px' }}/>
+
+                {
+                  item.quantity > 1 ? ( 
+                    <div>
+                      <div>Quantity: {item.quantity} </div>
+                      <button className="button is-danger is-light" 
+                      onClick={
+                        () => dispatch(removefromcart({
+                          id: _key,
+                        }))
+                      }>
+                        -
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <button className='button' 
+                      onClick={
+                        () => dispatch(removefromcart({
+                          id: _key,
+                        }))
+                      }>
+                        ❌ Remove
+                      </button>
+                    </div>
+                  )
+                }
               </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
         </div>
         <div className='column is-8' style={{ marginTop: '20px' }}>
           <div>Total $ {total}</div>
