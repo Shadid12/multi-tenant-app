@@ -1,0 +1,22 @@
+Query(
+  Lambda(
+    ["term"],
+    Select(
+      ["data"],
+      Map(
+        Filter(
+          Paginate(
+            Match(Index("stores"))
+          ),
+          Lambda("shopRef",
+            ContainsStr(
+              LowerCase(Select(["data","name"],Get(Var("shopRef")))),
+              Var("term")
+            )
+          )
+        ),
+        Lambda("shopRef", Get(Var("shopRef")))
+      )
+    )
+  )
+)

@@ -26,6 +26,7 @@ type Query {
   userBySub(sub: String): User
   store(name: String!): Store
   storeByCategory(category: String!): [Store]
+  searchStoreByNamePartial(term: String!): [Store] @resolver
   product(name: String!): Product
   users: [User]
   stores: [Store]
