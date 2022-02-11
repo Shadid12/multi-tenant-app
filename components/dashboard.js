@@ -41,27 +41,45 @@ export default function Dashboard() {
   }
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', padding: '20px' }}>
-    {error ? (
-      <div className="notification is-danger">
-        {error.message}
+    <>
+      
+      <div className="column is-2">
+        <input className="input is-link" type="text" placeholder="Search Store" />
+        <button className="button is-link">Search</button>
       </div>
-    ) : null}
 
-      {data?.stores?.data.map(shop => (
-        <div className="tile is-4 is-parent" key={shop._id}>
-          <div className="tile is-child box">
-            <p className="title is-4">{shop.name}</p>
-            <img src={shop.image ? shop.image : 'https://cdn.pixabay.com/photo/2019/08/27/04/18/store-icon-4433328_1280.png'} alt="" className={styles.productImage}/>
-            <div className={styles.buttonWrap}>
-              <Link href={`/shops/${shop._id}`}>
-                <a className="button">View Store</a>
-              </Link>
+      <div style={{ display: 'flex', flexWrap: 'wrap', padding: '20px' }}>
+      {error ? (
+        <div className="notification is-danger">
+          {error.message}
+        </div>
+      ) : null}
+
+        {data?.stores?.data.map(shop => (
+          <div className="tile is-4 is-parent" key={shop._id}>
+            <div className="tile is-child box">
+              <p className="title is-4">{shop.name}</p>
+              <img src={shop.image ? shop.image : 'https://cdn.pixabay.com/photo/2019/08/27/04/18/store-icon-4433328_1280.png'} alt="" className={styles.productImage}/>
+              <div className={styles.buttonWrap}>
+                <Link href={`/shops/${shop._id}`}>
+                  <a className="button">View Store</a>
+                </Link>
+              </div>
+              {
+                shop.category.map( item => 
+                  <span 
+                    key={item} 
+                    className="tag is-link is-light" 
+                    style={{ margin: '1px' }}
+                  >
+                    {item} 
+                  </span>
+                )
+              }
             </div>
           </div>
-        </div>
-      ))}
-
-    </div>
+        ))}
+      </div>
+    </>
   )
 }

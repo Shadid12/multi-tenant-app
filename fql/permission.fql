@@ -15,3 +15,16 @@ Lambda(
     Select(["data", "owner"], Get(Var("ref")))
   )
 )
+
+// Product Update
+Lambda(
+  ["oldData", "newData"],
+  Equals(
+    Select("ref", Get(Match(Index("userBySub"), CurrentIdentity()))),
+    Select(["data", "owner"], 
+      Get(
+        Select(["data", "store"], Var("oldData"))
+      )
+    )
+  )
+)

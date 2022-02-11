@@ -32,10 +32,6 @@ export default function Home() {
   return (
     <div className={styles.main}>
       <div className="columns">
-        <div className="column is-2">
-          <input className="input is-link" type="text" placeholder="Search Store" />
-          <button className="button is-link">Search</button>
-        </div>
         <Dashboard />
       </div>
     </div>

@@ -46,7 +46,7 @@ export default function Products() {
                 <p className="title">{product.name}</p>
                 <img className={styles.productImage} src={product.image} alt={product.name}/>
                 <p>$ {product.price}</p>
-                <Link href="/shops/new">
+                <Link href={`/products/${product._id}/edit`}>
                   <a className="button is-info is-light">Update Item</a>
                 </Link>
               </div>
