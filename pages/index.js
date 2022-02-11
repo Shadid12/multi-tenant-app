@@ -59,12 +59,13 @@ export async function getServerSideProps({ req, res }) {
     // User not found Create a new user
     console.log('User not found, creating a new user', user);
     const newUser = await serverClient.mutation(CreateNewuser, { 
-      username: user.given_name,
+      username: user.given_name ? user.given_name : user.name,
       email: user.nickname,
       sub: user.sub
     }).toPromise();
 
-    console.log('New user created', newUser.data);
+    console.log('New user created', newUser.error);
+
     return {
       props: {
         userInfo: newUser.data ? newUser.data.createUser : null

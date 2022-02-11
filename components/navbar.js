@@ -7,7 +7,6 @@ const Navbar = () => {
   const total = useSelector(state => {
     let totalItem = 0;
     const items = state.cart.items;
-    console.log('items', items);
     for (const [key, value] of Object.entries(items)) {
       totalItem = totalItem + items[key].quantity;
     }
@@ -27,12 +26,12 @@ const Navbar = () => {
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
+            <Link href="/cart">
+              <a className="button">{total} 🛒</a>
+            </Link>
               {
                 user ? ( 
                   <>
-                    <Link href="/cart">
-                      <a className="button">{total} 🛒</a>
-                    </Link>
                     <Link href="/shops">
                       <a className="button">Seller Profile</a>
                     </Link>

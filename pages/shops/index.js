@@ -39,7 +39,7 @@ const UpdateUser = `
       stripeAccount
     }
   }
-`
+`;
 
 export default function MyShops() {
   const { user } = useUser();
@@ -63,6 +63,9 @@ export default function MyShops() {
   const activateSellerProfile = async () => {
     const response = await fetch('/api/stripe/create-account');
     const accountData = await response.json();
+
+    console.log('accountData', data);
+
     const { email, sub } = data.userBySub;
 
     updateUserMutation({

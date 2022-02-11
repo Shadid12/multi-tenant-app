@@ -1,3 +1,4 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import { loadStripe } from '@stripe/stripe-js';
 import { useDispatch, useSelector } from 'react-redux';
 import { removefromcart } from "../src/features/cart/cartSlice";
@@ -15,7 +16,7 @@ export default function Cart() {
 
   const cartItems = useSelector(state => state.cart.items);
 
-  console.log('cartItems', cartItems);
+  const { user } = useUser();
 
   let total = 0;
   Object.entries(cartItems).forEach(([_key, item]) => {
@@ -85,6 +86,11 @@ export default function Cart() {
         })}
         </div>
         <div className='column is-8' style={{ marginTop: '20px' }}>
+          {!user ? (
+            <div className="notification is-warning">
+              <p>You are checking out as a guest</p>
+            </div>
+          ) : null}
           <div>Total $ {total}</div>
           <button onClick={checkout} className="button is-link" disabled={total == 0}>Checkout</button>
         </div>
