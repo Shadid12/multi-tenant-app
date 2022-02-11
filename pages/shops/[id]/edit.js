@@ -33,8 +33,7 @@ export default function EditShop() {
     variables: { id: router.query.id },
   });
 
-  const [_result, updateShop] = useMutation(UpdateStore);
-
+  const [updateShopResult, updateShop] = useMutation(UpdateStore);
 
   useEffect(() => {
     if(data?.findStoreByID) {
@@ -60,13 +59,7 @@ export default function EditShop() {
       name: state.name,
       category: state.category.split(','),
       image: state.image,
-    }).then(data => {
-      console.log('data', data);
-      alert('Successfully updated store information');
-      router.push('/shops');
-    }).catch(err => {
-      console.log(err);
-     })
+    })
   }
 
   if(fetching) { 
@@ -80,6 +73,20 @@ export default function EditShop() {
   return (
     <div className="container">
       <div className="column is-four-fifths">
+        {
+          updateShopResult.error ? (
+            <div className="notification is-danger">
+              You are not allowed to modify this shop.
+            </div>
+          ) : null
+        }
+        {
+          updateShopResult.data ? (
+            <div className="notification is-success">
+              Successfully updated the shop.
+            </div>
+          ) : null
+        }
         <form onSubmit={submitform}>
           <label>Store Name:
             <input

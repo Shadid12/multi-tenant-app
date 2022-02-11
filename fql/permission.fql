@@ -1,0 +1,17 @@
+// Write to only your data
+Lambda(
+  ["oldData", "newData"],
+  Equals(
+    Select("ref", Get(Match(Index("userBySub"), CurrentIdentity()))),
+    Select(["data", "owner"], Var("oldData"))
+  )
+)
+
+// Delete only your data
+Lambda(
+  "ref",
+  Equals(
+    Select("ref", Get(Match(Index("userBySub"), CurrentIdentity()))),
+    Select(["data", "owner"], Get(Var("ref")))
+  )
+)
