@@ -17,6 +17,7 @@ export const GetMyShops = `
          _id
          name
          category
+         image
         }
       }
     }
@@ -80,7 +81,7 @@ export default function MyShops() {
     });
   }
 
-  if(!data.userBySub?.stripeAccount) {
+  if(!data?.userBySub?.stripeAccount) {
     return (
       <div className="container">
         <h1 className="title is-8">Activate your seller profile</h1> 

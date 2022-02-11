@@ -3,12 +3,13 @@ import { useDispatch } from "react-redux";
 import { useQuery } from "urql";
 import { addtocart } from '../../../src/features/cart/cartSlice';
 
-const FindShopById = `
+export const FindShopById = `
 query FindShopById($id: ID!) { 
   findStoreByID(id: $id) {
     _id
     name
     category
+    image
     products {
       data {
         _id
@@ -35,8 +36,6 @@ export default function Shop() {
     query: FindShopById,
     variables: { id: router.query.id },
   });
-
-  console.log('router.query.id', data);
 
   if(fetching) { 
     return <p>Loading...</p>;

@@ -1,32 +1,26 @@
-import { getSession } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { useMutation } from "urql";
-import { client } from "../../src/gqlClient";
-import { UserQuery } from "../index";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "urql";
+import { FindShopById } from './index';
 
-
-const CreateStore = `
-  mutation CreateStore($name: String!, $ownerId: ID!, $category: [String!], $image: String) {
-    createStore(data: {
-      name: $name,
-      category: $category,
-      image: $image,
-      owner: {
-        connect: $ownerId
-      }
+const UpdateStore = `
+  mutation UpdateShop($id: ID!, $name: String!, $category: [String!], $image: String) {
+    updateStore(id: $id, data: {
+      name: $name
+      image: $image
+      category: $category
     }) {
       _id
+      image
       name
       category
-      owner {
-        _id
-      }
     }
   }
 `
 
-export default function NewShop({ accessToken, userInfo}) {
+
+
+export default function EditShop() {
   const router = useRouter();
   const [state, setState] = useState({
     name: '',
@@ -34,7 +28,23 @@ export default function NewShop({ accessToken, userInfo}) {
     image: '',
   });
 
-  const [{fetching, data, error}, executeMutation] = useMutation(CreateStore);
+  const [{fetching, data, error}, _] = useQuery({
+    query: FindShopById,
+    variables: { id: router.query.id },
+  });
+
+  const [_result, updateShop] = useMutation(UpdateStore);
+
+
+  useEffect(() => {
+    if(data?.findStoreByID) {
+      setState({
+        name: data.findStoreByID.name,
+        category: data.findStoreByID.category.join(','),
+        image: data.findStoreByID.image,
+      });
+    }
+  }, [data])
 
   const handleChange = e => {
     setState({
@@ -45,20 +55,27 @@ export default function NewShop({ accessToken, userInfo}) {
 
   const submitform = e => {
     e.preventDefault();
-    executeMutation({
+    updateShop({
+      id: router.query.id,
       name: state.name,
-      ownerId: userInfo._id,
       category: state.category.split(','),
       image: state.image,
     }).then(data => {
-      alert('Successfully created a new store');
+      console.log('data', data);
+      alert('Successfully updated store information');
       router.push('/shops');
     }).catch(err => {
       console.log(err);
      })
   }
 
-  if(fetching) return <p>Loading...</p>
+  if(fetching) { 
+    return <p>Loading...</p>;
+  }
+
+  if(error) { 
+    return <p>{error.message}</p>;
+  }
 
   return (
     <div className="container">
@@ -92,35 +109,10 @@ export default function NewShop({ accessToken, userInfo}) {
             />
           </label>
           <div style={{ marginTop: '20px' }}>
-            <button className="button is-primary">Submit</button>
+            <button className="button is-info is-light">Update</button>
           </div>
         </form>
       </div>
     </div>
   )
-}
-
-// This is to demostrate how to use the getServerSideProps works
-export async function getServerSideProps({ req, res }) {
-  const session = await getSession(req, res);
-  const { accessToken, user } = session;
-
-  if(!session) { 
-    return {
-      props: {
-        error: 'UnAuthorized'
-      }
-    }
-  }
-
-  const serverClient = client(accessToken);
-
-  const userInfo = await serverClient.query(UserQuery, { sub: user.sub }).toPromise();
-
-  return {
-    props: {
-      accessToken,
-      userInfo: userInfo.data.userBySub
-    },
-  }
 }
