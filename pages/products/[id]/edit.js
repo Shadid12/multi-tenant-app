@@ -43,7 +43,6 @@ export default function AddShopItem() {
 
   const [updateProductResult, updateProduct] = useMutation(UpdateProduct);
 
-
   useEffect(() => {
     if(record?.data) {
       console.log(record.data);
@@ -53,7 +52,7 @@ export default function AddShopItem() {
         image: record.data?.findProductByID.image,
       })
     }
-  }, [record])
+  }, [record]);
 
   const handleChange = e => { 
     setState({

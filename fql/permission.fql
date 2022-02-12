@@ -28,3 +28,19 @@ Lambda(
     )
   )
 )
+
+// Delete Product
+Lambda(
+  "ref",
+  Equals(
+    Select("ref", Get(Match(Index("userBySub"), CurrentIdentity()))),
+    Select(
+      ["data", "owner"],
+      Get(
+        Select(
+          ["data", "store"],Get(Var("ref"))
+        )
+      )
+    )
+  )
+)

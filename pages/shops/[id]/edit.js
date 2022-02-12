@@ -119,6 +119,7 @@ export default function EditShop() {
             <button className="button is-info is-light">Update</button>
           </div>
         </form>
+
       </div>
     </div>
   )

@@ -55,7 +55,6 @@ export default function Dashboard() {
       setShops(data.stores.data)
     }
     if(searchResult?.data?.searchStoreByNamePartial) {
-      console.log('===>', searchResult.data.searchStoreByNamePartial)
       setShops(searchResult.data.searchStoreByNamePartial)
     }
   }, [data, searchResult]);
@@ -82,18 +81,21 @@ export default function Dashboard() {
         }>Search</button>
       </div>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', padding: '20px' }}>
+      <div className="column is-8" style={{ display: 'flex', flexWrap: 'wrap', padding: '20px' }}>
       {error ? (
         <div className="notification is-danger">
           {error.message}
         </div>
       ) : null}
 
+        <div className="tile is-ancestor">
         {shops.map(shop => (
           <div className="tile is-4 is-parent" key={shop._id}>
             <div className="tile is-child box">
               <p className="title is-4">{shop.name}</p>
-              <img src={shop.image ? shop.image : 'https://cdn.pixabay.com/photo/2019/08/27/04/18/store-icon-4433328_1280.png'} alt="" className={styles.productImage}/>
+              <div className={styles.imageWrap}>
+                <img src={shop.image ? shop.image : 'https://cdn.pixabay.com/photo/2019/08/27/04/18/store-icon-4433328_1280.png'} alt="" className={styles.productImage}/>
+              </div>
               <div className={styles.buttonWrap}>
                 <Link href={`/shops/${shop._id}`}>
                   <a className="button">View Store</a>
@@ -113,6 +115,7 @@ export default function Dashboard() {
             </div>
           </div>
         ))}
+        </div>
       </div>
     </>
   )
